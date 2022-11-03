@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {Traveller, Location, Trip} = require("../models")
 
+// All Travellers
 router.get("/", (req, res) => {
     Traveller.findAll().then(allTravellers=>{
         res.json(allTravellers)
@@ -11,6 +12,7 @@ router.get("/", (req, res) => {
     })
 })
 
+// One Traveller
 router.get("/:id", (req, res) => {
     Traveller.findByPk(req.params.id)
     .then((oneTraveller) => {
@@ -21,5 +23,19 @@ router.get("/:id", (req, res) => {
     })
 });
 
+// New Traveller
+router.post("/", (req, res) => {
+    Traveller.create({
+      name: req.body.name,
+      email: req.body.email
+    })
+      .then((data) => {
+        res.status(201).json(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ err: err });
+      });
+})
 
 module.exports=router;
